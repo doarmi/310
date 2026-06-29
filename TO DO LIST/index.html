@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clay Todo List</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #fff3a3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .todo-card {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 10px 10px 25px rgba(150, 120, 40, 0.2),
+                  -8px -8px 20px rgba(255, 255, 255, 0.8);
+    }
+
+    h1 {
+      text-align: center;
+      color: #7c3aed;
+      margin-bottom: 22px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    #todoInput {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 16px;
+      background: #f5f0ff;
+      outline: none;
+      font-size: 15px;
+    }
+
+    #addBtn {
+      border: none;
+      border-radius: 16px;
+      padding: 0 18px;
+      background: #8b5cf6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(139, 92, 246, 0.3);
+      transition: 0.2s;
+    }
+
+    #addBtn:hover {
+      background: #7c3aed;
+      transform: translateY(-2px);
+    }
+
+    .filter-area {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      border: none;
+      padding: 10px;
+      border-radius: 14px;
+      background: #eee7ff;
+      color: #6d28d9;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #8b5cf6;
+      color: white;
+    }
+
+    .count-text {
+      margin-bottom: 14px;
+      color: #5b21b6;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    #todoList {
+      list-style: none;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #faf7ff;
+      margin-bottom: 12px;
+      padding: 13px;
+      border-radius: 18px;
+      box-shadow: inset 3px 3px 8px rgba(124, 58, 237, 0.08),
+                  inset -3px -3px 8px rgba(255, 255, 255, 0.9);
+    }
+
+    .todo-item span {
+      flex: 1;
+      color: #333;
+    }
+
+    .todo-item.completed span {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    .delete-btn {
+      border: none;
+      background: #f87171;
+      color: white;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .delete-btn:hover {
+      background: #ef4444;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="todo-card">
+    <h1>My To Do List</h1>
+
+    <div class="input-area">
+      <input type="text" id="todoInput" placeholder="할 일을 입력하세요" />
+      <button id="addBtn">추가</button>
+    </div>
+
+    <div class="filter-area">
+      <button class="filter-btn active" data-filter="all">전체</button>
+      <button class="filter-btn" data-filter="active">진행중</button>
+      <button class="filter-btn" data-filter="completed">완료</button>
+    </div>
+
+    <p class="count-text">
+      남은 할 일: <span id="leftCount">0</span>개
+    </p>
+
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    const todoInput = document.querySelector("#todoInput");
+    const addBtn = document.querySelector("#addBtn");
+    const todoList = document.querySelector("#todoList");
+    const leftCount = document.querySelector("#leftCount");
+    const filterBtns = document.querySelectorAll(".filter-btn");
+
+    let todos = [];
+    let currentFilter = "all";
+
+    addBtn.addEventListener("click", addTodo);
+
+    todoInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") addTodo();
+    });
+
+    filterBtns.forEach(function (button) {
+      button.addEventListener("click", function () {
+        filterBtns.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        currentFilter = button.dataset.filter;
+        renderTodos();
+      });
+    });
+
+    function addTodo() {
+      const text = todoInput.value.trim();
+
+      if (text === "") {
+        alert("할 일을 입력해주세요!");
+        return;
+      }
+
+      todos.push({
+        id: Date.now(),
+        text,
+        completed: false
+      });
+
+      todoInput.value = "";
+      renderTodos();
+    }
+
+    function toggleTodo(id) {
+      todos = todos.map(todo => {
+        if (todo.id === id) todo.completed = !todo.completed;
+        return todo;
+      });
+
+      renderTodos();
+    }
+
+    function deleteTodo(id) {
+      todos = todos.filter(todo => todo.id !== id);
+      renderTodos();
+    }
+
+    function renderTodos() {
+      todoList.innerHTML = "";
+
+      let filteredTodos = todos;
+
+      if (currentFilter === "active") {
+        filteredTodos = todos.filter(todo => !todo.completed);
+      }
+
+      if (currentFilter === "completed") {
+        filteredTodos = todos.filter(todo => todo.completed);
+      }
+
+      filteredTodos.forEach(todo => {
+        const li = document.createElement("li");
+        li.className = "todo-item";
+
+        if (todo.completed) li.classList.add("completed");
+
+        li.innerHTML = `
+          <input type="checkbox" ${todo.completed ? "checked" : ""}>
+          <span>${todo.text}</span>
+          <button class="delete-btn">삭제</button>
+        `;
+
+        li.querySelector("input")
+          .addEventListener("change", () => toggleTodo(todo.id));
+
+        li.querySelector(".delete-btn")
+          .addEventListener("click", () => deleteTodo(todo.id));
+
+        todoList.appendChild(li);
+      });
+
+      updateLeftCount();
+    }
+
+    function updateLeftCount() {
+      leftCount.textContent =
+        todos.filter(todo => !todo.completed).length;
+    }
+  </script>
+</body>
+</html>
