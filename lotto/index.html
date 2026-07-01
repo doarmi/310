@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Lucky Lab 645</title>
+<!-- 모바일 웹앱 설정 -->
+<meta name="theme-color" content="#7C3AED">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LUCKYLAB645">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- 파비콘 / 앱 아이콘 -->
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<style>
+  :root{
+    --배경색1:#eef4fb; --배경색2:#f7f9fc; --배경색3:#e8f1ff;
+    --글자색:#1c1c1e; --보조글자색:#6e6e73;
+    --카드배경:rgba(255,255,255,0.55); --카드테두리:rgba(255,255,255,0.6);
+    --오브배경:rgba(255,255,255,0.45); --오브테두리:rgba(255,255,255,0.7);
+    --프라이머리:#34C759; --블루글로우:rgba(88,150,255,0.35);
+    --그림자색:rgba(31,58,102,0.15); --블러강도:26px; --전환시간:0.5s;
+  }
+  body.dark{
+    --배경색1:#0b1224; --배경색2:#12172a; --배경색3:#101a30;
+    --글자색:#f2f2f7; --보조글자색:#9a9ab0;
+    --카드배경:rgba(30,36,58,0.55); --카드테두리:rgba(255,255,255,0.12);
+    --오브배경:rgba(255,255,255,0.06); --오브테두리:rgba(120,160,255,0.35);
+    --블루글로우:rgba(90,150,255,0.55); --그림자색:rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","Malgun Gothic",sans-serif;color:var(--글자색);background:radial-gradient(circle at 20% 10%,var(--배경색3),var(--배경색1) 60%,var(--배경색2));transition:background var(--전환시간) ease,color var(--전환시간) ease;display:flex;justify-content:center;padding:24px 14px 60px}
+  .앱컨테이너{width:100%;max-width:480px;text-align:center}
+  .상단영역{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:22px;position:relative}
+  .로고이모지{font-size:40px;filter:drop-shadow(0 4px 10px var(--그림자색))}.앱제목{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:0}.서브타이틀{font-size:13px;color:var(--보조글자색);margin:0}
+  .모드토글{position:absolute;top:0;right:0;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}.토글아이콘{font-size:14px}.토글스위치{width:48px;height:28px;border-radius:999px;background:rgba(120,120,128,.28);position:relative;transition:background var(--전환시간) ease}body.dark .토글스위치{background:var(--프라이머리)}.토글손잡이{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.4,1.6,.4,1)}body.dark .토글손잡이{transform:translateX(20px)}
+  .글래스카드{background:var(--카드배경);border:1px solid var(--카드테두리);border-radius:28px;backdrop-filter:blur(var(--블러강도));-webkit-backdrop-filter:blur(var(--블러강도));box-shadow:0 12px 30px var(--그림자색);padding:20px;margin-bottom:18px;transition:background var(--전환시간) ease,border-color var(--전환시간) ease}.설정라벨{font-size:13px;font-weight:700;color:var(--보조글자색);text-align:left;margin:4px 2px 8px}
+  .게임수선택,.제외입력창{width:100%;padding:12px 16px;border-radius:999px;border:1px solid var(--카드테두리);background:var(--오브배경);color:var(--글자색);font-size:15px;font-weight:600;text-align:center;outline:none;margin-bottom:16px}.제외입력창{font-size:14px;margin-bottom:14px}.제외입력창::placeholder{color:var(--보조글자색)}
+  .최근제외표시{min-height:18px;font-size:12px;color:var(--프라이머리);font-weight:700;margin-bottom:10px;word-break:break-all}.제외그리드{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:8px;margin-bottom:10px}.제외칩{aspect-ratio:1/1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:var(--오브배경);border:1px solid var(--오브테두리);color:var(--글자색);cursor:pointer;transition:transform .2s ease,box-shadow .25s ease,background .25s ease,color .25s ease}.제외칩:active{transform:scale(.9)}.제외칩.선택됨{background:var(--프라이머리);color:#fff;border-color:var(--프라이머리);transform:scale(1.1);box-shadow:0 0 14px var(--블루글로우)}
+  .경고문구{font-size:12px;color:#ff453a;font-weight:700;margin:4px 0 6px;display:none}.경고문구.보임{display:block}.버튼영역{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:18px}.캡슐버튼{flex:1 1 auto;min-width:130px;padding:14px 18px;border:none;border-radius:999px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,opacity .2s ease;user-select:none}.캡슐버튼:active{transform:scale(.97)}.버튼-primary{background:var(--프라이머리);color:#fff;box-shadow:0 8px 20px rgba(52,199,89,.35)}.버튼-secondary{background:var(--오브배경);color:var(--글자색);border:1px solid var(--카드테두리)}.캡슐버튼:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .결과영역{min-height:60px}.로딩표시{display:none;flex-direction:column;align-items:center;gap:10px;padding:30px 10px;color:var(--보조글자색);font-weight:600;font-size:14px}.로딩표시.보임{display:flex}.로딩스피너{width:34px;height:34px;border-radius:50%;border:3px solid rgba(120,120,128,.25);border-top-color:var(--프라이머리);animation:스핀 .8s linear infinite}@keyframes 스핀{to{transform:rotate(360deg)}}.게임보드{opacity:0;transform:translateY(20px);animation:카드등장 .5s ease forwards}@keyframes 카드등장{to{opacity:1;transform:translateY(0)}}.게임보드헤더{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.게임번호라벨{font-size:13px;font-weight:800;color:var(--보조글자색);background:var(--오브배경);padding:4px 12px;border-radius:999px}.즐겨찾기버튼{background:none;border:none;font-size:20px;cursor:pointer;transition:transform .25s ease}.즐겨찾기버튼.애니메이션{animation:하트펄스 .4s ease}@keyframes 하트펄스{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}.번호목록{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+  .번호오브{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--글자색);background:var(--오브배경);border:1px solid var(--오브테두리);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6);position:relative;overflow:hidden;opacity:0;transform:scale(.8);animation:오브등장 .45s ease forwards,오브플로팅 3s ease-in-out infinite;animation-delay:var(--지연시간),calc(var(--지연시간) + .5s);cursor:pointer}.번호오브:active{transform:scale(.95)!important}.번호오브::after{content:"";position:absolute;top:-40%;left:-60%;width:60%;height:180%;background:linear-gradient(120deg,rgba(255,255,255,.55),transparent 60%);transform:rotate(20deg);pointer-events:none}@keyframes 오브등장{to{opacity:1;transform:scale(1)}}@keyframes 오브플로팅{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .번호오브[data-구간="1"]{box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6),0 0 0 2px rgba(255,201,60,.5) inset}.번호오브[data-구간="2"]{box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6),0 0 0 2px rgba(93,173,255,.5) inset}.번호오브[data-구간="3"]{box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6),0 0 0 2px rgba(255,99,99,.5) inset}.번호오브[data-구간="4"]{box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6),0 0 0 2px rgba(150,150,150,.5) inset}.번호오브[data-구간="5"]{box-shadow:0 6px 14px var(--그림자색),inset 0 1px 2px rgba(255,255,255,.6),0 0 0 2px rgba(120,220,140,.5) inset}
+  .안내문구{font-size:11.5px;color:var(--보조글자색);line-height:1.5;margin-top:20px;padding:0 8px}.토스트{position:fixed;left:50%;bottom:30px;transform:translate(-50%,20px);background:rgba(28,28,30,.85);color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;font-weight:600;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;z-index:999;white-space:nowrap}.토스트.보임{opacity:1;transform:translate(-50%,0)}
+  .컨텍스트메뉴{position:fixed;background:var(--카드배경);border:1px solid var(--카드테두리);border-radius:16px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 10px 30px var(--그림자색);overflow:hidden;z-index:1000;display:none;min-width:170px}.컨텍스트메뉴.보임{display:block}.컨텍스트메뉴 button{width:100%;padding:12px 16px;background:none;border:none;border-bottom:1px solid var(--카드테두리);color:var(--글자색);font-size:14px;font-weight:600;cursor:pointer;text-align:left}.컨텍스트메뉴 button:last-child{border-bottom:none}
+  .모달배경{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:1200}.모달배경.보임{display:flex}.모달{width:100%;max-width:460px;max-height:80vh;overflow:auto;text-align:left}.모달헤더{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.모달닫기{border:none;background:var(--오브배경);color:var(--글자색);border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}.즐겨찾기항목{padding:12px 0;border-bottom:1px solid var(--카드테두리)}.즐겨찾기항목:last-child{border-bottom:none}.즐겨찾기날짜{font-size:12px;color:var(--보조글자색);margin-bottom:6px}.즐겨찾기번호{font-size:16px;font-weight:800}
+  @media(max-width:360px){.번호오브{width:46px;height:46px;font-size:15px}.캡슐버튼{min-width:100%}}
+</style>
+</head>
+<body>
+<div class="앱컨테이너">
+  <div class="상단영역">
+    <div class="로고이모지">🍀</div>
+    <h1 class="앱제목">Lucky Lab 645</h1>
+    <p class="서브타이틀">당신의 행운 번호를 연구합니다 ✨</p>
+    <div class="모드토글" id="모드토글버튼"><span class="토글아이콘">☀️</span><div class="토글스위치"><div class="토글손잡이"></div></div></div>
+  </div>
+
+  <div class="글래스카드">
+    <div class="설정라벨">게임 수 선택</div>
+    <select id="게임수선택" class="게임수선택"><option value="1">1게임</option><option value="3">3게임</option><option value="5">5게임</option><option value="10">10게임</option></select>
+    <div class="설정라벨">제외 번호 입력 (예: 4, 13, 44)</div>
+    <input type="text" id="제외입력창" class="제외입력창" placeholder="쉼표로 구분하여 입력하세요">
+    <div class="최근제외표시" id="최근제외표시">선택된 제외 번호가 없습니다.</div>
+    <div class="설정라벨">1 ~ 45 번호에서 제외할 번호를 선택하세요</div>
+    <div class="제외그리드" id="제외그리드"></div>
+    <div class="경고문구" id="경고문구">⚠️ 제외 번호가 40개 이상이면 추첨할 수 없습니다.</div>
+  </div>
+
+  <div class="버튼영역">
+    <button class="캡슐버튼 버튼-primary" id="추첨버튼">🎲 번호 추첨하기</button>
+    <button class="캡슐버튼 버튼-secondary" id="복사버튼">📋 번호 복사</button>
+    <button class="캡슐버튼 버튼-secondary" id="제외초기화버튼">🔄 제외 번호 초기화</button>
+    <button class="캡슐버튼 버튼-secondary" id="즐겨찾기목록버튼">❤️ 즐겨찾기 보기</button>
+  </div>
+
+  <div class="결과영역" id="결과영역">
+    <div class="로딩표시" id="로딩표시"><div class="로딩스피너"></div><div>Generating Lucky Numbers...<br>행운 번호를 연구 중입니다...</div></div>
+    <div id="게임보드컨테이너"></div>
+  </div>
+
+  <p class="안내문구">본 앱은 재미와 편의를 위한 랜덤 번호 생성 서비스이며,<br>실제 당첨을 보장하지 않습니다.</p>
+</div>
+
+<div class="토스트" id="토스트"></div>
+<div class="컨텍스트메뉴" id="컨텍스트메뉴"><button id="메뉴복사">📋 번호 복사</button><button id="메뉴제외추가">🚫 제외 번호 추가</button></div>
+<div class="모달배경" id="즐겨찾기모달배경"><div class="글래스카드 모달"><div class="모달헤더"><strong>❤️ 저장된 즐겨찾기</strong><button class="모달닫기" id="모달닫기버튼">닫기</button></div><div id="즐겨찾기목록영역">불러오는 중...</div></div></div>
+
+<script>
+  const 선택된제외번호 = new Set();
+  let 마지막생성결과 = [];
+  let 즐겨찾기상태 = {};
+  let 컨텍스트메뉴대상번호 = null;
+  let 토스트타이머 = null;
+
+  window.addEventListener('DOMContentLoaded', () => {
+    저장된모드적용();
+    제외그리드생성();
+    이벤트등록();
+    최근제외표시갱신();
+  });
+
+  function GAS환경인가(){
+    return typeof google !== 'undefined' && google.script && google.script.run;
+  }
+
+  function 저장된모드적용(){
+    const 저장된모드 = localStorage.getItem('luckyLab645_theme');
+    if(저장된모드 === 'dark'){
+      document.body.classList.add('dark');
+      document.querySelector('.토글아이콘').textContent = '🌙';
+    }
+  }
+
+  function 제외그리드생성(){
+    const 그리드 = document.getElementById('제외그리드');
+    let html = '';
+    for(let 번호 = 1; 번호 <= 45; 번호++){
+      html += `<button type="button" class="제외칩" data-번호="${번호}">${번호}</button>`;
+    }
+    그리드.innerHTML = html;
+  }
+
+  function 이벤트등록(){
+    document.getElementById('모드토글버튼').addEventListener('click', 모드전환);
+    document.getElementById('제외그리드').addEventListener('click', 제외칩클릭이벤트);
+    document.getElementById('제외입력창').addEventListener('input', 최근제외표시갱신);
+    document.getElementById('추첨버튼').addEventListener('click', 번호추첨시작);
+    document.getElementById('복사버튼').addEventListener('click', 번호복사);
+    document.getElementById('제외초기화버튼').addEventListener('click', 제외번호초기화);
+    document.getElementById('즐겨찾기목록버튼').addEventListener('click', 즐겨찾기목록열기);
+    document.getElementById('모달닫기버튼').addEventListener('click', 즐겨찾기목록닫기);
+    document.getElementById('즐겨찾기모달배경').addEventListener('click', (e) => { if(e.target.id === '즐겨찾기모달배경') 즐겨찾기목록닫기(); });
+    document.getElementById('메뉴복사').addEventListener('click', () => { 단일번호복사(컨텍스트메뉴대상번호); 컨텍스트메뉴닫기(); });
+    document.getElementById('메뉴제외추가').addEventListener('click', () => { 결과번호를제외번호에추가(컨텍스트메뉴대상번호); 컨텍스트메뉴닫기(); });
+    document.addEventListener('click', (e) => { if(!e.target.closest('.컨텍스트메뉴')) 컨텍스트메뉴닫기(); });
+  }
+
+  function 모드전환(){
+    const 다크모드여부 = document.body.classList.toggle('dark');
+    document.querySelector('.토글아이콘').textContent = 다크모드여부 ? '🌙' : '☀️';
+    localStorage.setItem('luckyLab645_theme', 다크모드여부 ? 'dark' : 'light');
+  }
+
+  function 제외칩클릭이벤트(e){
+    const 칩 = e.target.closest('.제외칩');
+    if(!칩) return;
+    칩클릭처리(Number(칩.dataset.번호), 칩);
+  }
+
+  function 칩클릭처리(번호, 칩엘리먼트, 강제추가 = false){
+    if(선택된제외번호.has(번호) && !강제추가){
+      선택된제외번호.delete(번호);
+      칩엘리먼트.classList.remove('선택됨');
+    } else {
+      선택된제외번호.add(번호);
+      칩엘리먼트.classList.add('선택됨');
+    }
+    최근제외표시갱신();
+  }
+
+  function 결과번호를제외번호에추가(번호){
+    const 칩 = document.querySelector(`.제외칩[data-번호="${번호}"]`);
+    if(칩) 칩클릭처리(번호, 칩, true);
+    토스트표시(`🚫 ${번호}번을 제외 번호에 추가했습니다.`);
+  }
+
+  function 전체제외번호가져오기(){
+    const 결과집합 = new Set(선택된제외번호);
+    const 입력값 = document.getElementById('제외입력창').value;
+    입력값.split(',').forEach((조각) => {
+      const 숫자 = Number(조각.trim());
+      if(Number.isInteger(숫자) && 숫자 >= 1 && 숫자 <= 45) 결과집합.add(숫자);
+    });
+    return Array.from(결과집합).sort((a,b) => a-b);
+  }
+
+  function 최근제외표시갱신(){
+    const 전체제외번호 = 전체제외번호가져오기();
+    const 표시영역 = document.getElementById('최근제외표시');
+    const 경고문구 = document.getElementById('경고문구');
+    const 추첨버튼 = document.getElementById('추첨버튼');
+
+    표시영역.textContent = 전체제외번호.length === 0 ? '선택된 제외 번호가 없습니다.' : '최근 제외 번호: ' + 전체제외번호.join(', ');
+
+    if(전체제외번호.length >= 40){
+      경고문구.classList.add('보임');
+      추첨버튼.disabled = true;
+    } else {
+      경고문구.classList.remove('보임');
+      추첨버튼.disabled = false;
+    }
+  }
+
+  function 제외번호초기화(){
+    선택된제외번호.clear();
+    document.getElementById('제외입력창').value = '';
+    document.querySelectorAll('.제외칩.선택됨').forEach((칩) => 칩.classList.remove('선택됨'));
+    최근제외표시갱신();
+    토스트표시('🔄 제외 번호가 초기화되었습니다.');
+  }
+
+  function 번호추첨시작(){
+    const 제외번호목록 = 전체제외번호가져오기();
+    if(제외번호목록.length >= 40){ 토스트표시('⚠️ 제외 번호가 너무 많아 추첨할 수 없습니다.'); return; }
+
+    const 후보풀 = [];
+    for(let i = 1; i <= 45; i++) if(!제외번호목록.includes(i)) 후보풀.push(i);
+    if(후보풀.length < 6){ 토스트표시('⚠️ 선택 가능한 번호가 부족합니다.'); return; }
+
+    const 게임수 = Number(document.getElementById('게임수선택').value);
+    const 로딩표시 = document.getElementById('로딩표시');
+    const 보드컨테이너 = document.getElementById('게임보드컨테이너');
+    const 추첨버튼 = document.getElementById('추첨버튼');
+
+    로딩표시.classList.add('보임');
+    보드컨테이너.style.opacity = '0.3';
+    보드컨테이너.style.filter = 'blur(6px)';
+    추첨버튼.disabled = true;
+
+    setTimeout(() => {
+      마지막생성결과 = Array.from({length: 게임수}, () => 게임번호생성(후보풀));
+      즐겨찾기상태 = {};
+      로딩표시.classList.remove('보임');
+      보드컨테이너.style.opacity = '1';
+      보드컨테이너.style.filter = 'none';
+      추첨버튼.disabled = false;
+      결과화면그리기(마지막생성결과);
+    }, 800 + Math.random() * 200);
+  }
+
+  function 게임번호생성(후보풀){
+    const 복사본 = 후보풀.slice();
+    const 뽑힌번호 = [];
+    for(let i = 0; i < 6; i++){
+      const 랜덤인덱스 = Math.floor(Math.random() * 복사본.length);
+      뽑힌번호.push(복사본.splice(랜덤인덱스, 1)[0]);
+    }
+    return 뽑힌번호.sort((a,b) => a-b);
+  }
+
+  function 번호구간구하기(번호){
+    if(번호 <= 10) return 1;
+    if(번호 <= 20) return 2;
+    if(번호 <= 30) return 3;
+    if(번호 <= 40) return 4;
+    return 5;
+  }
+
+  function 결과화면그리기(전체게임결과){
+    const 컨테이너 = document.getElementById('게임보드컨테이너');
+    컨테이너.innerHTML = 전체게임결과.map((번호배열, 게임인덱스) => `
+      <div class="글래스카드 게임보드">
+        <div class="게임보드헤더">
+          <span class="게임번호라벨">GAME ${게임인덱스 + 1}</span>
+          <button type="button" class="즐겨찾기버튼" data-게임인덱스="${게임인덱스}" aria-label="즐겨찾기 저장">♡</button>
+        </div>
+        <div class="번호목록">
+          ${번호배열.map((번호, 순번) => `<button type="button" class="번호오브" data-번호="${번호}" data-구간="${번호구간구하기(번호)}" style="--지연시간:${순번 * 0.12}s">${번호}</button>`).join('')}
+        </div>
+      </div>`).join('');
+
+    컨테이너.querySelectorAll('.즐겨찾기버튼').forEach((버튼) => {
+      버튼.addEventListener('click', () => 즐겨찾기토글(Number(버튼.dataset.게임인덱스)));
+    });
+
+    컨테이너.querySelectorAll('.번호오브').forEach((오브) => {
+      오브.addEventListener('click', () => 단일번호복사(Number(오브.dataset.번호)));
+      롱프레스이벤트등록(오브);
+    });
+  }
+
+  function 롱프레스이벤트등록(오브){
+    let 타이머 = null;
+    const 시작 = () => {
+      타이머 = setTimeout(() => {
+        컨텍스트메뉴대상번호 = Number(오브.dataset.번호);
+        const 위치 = 오브.getBoundingClientRect();
+        컨텍스트메뉴열기(위치.left, 위치.top);
+      }, 500);
+    };
+    const 종료 = () => clearTimeout(타이머);
+    오브.addEventListener('mousedown', 시작);
+    오브.addEventListener('touchstart', 시작, {passive:true});
+    오브.addEventListener('mouseup', 종료);
+    오브.addEventListener('mouseleave', 종료);
+    오브.addEventListener('touchend', 종료);
+  }
+
+  function 컨텍스트메뉴열기(x, y){
+    const 메뉴 = document.getElementById('컨텍스트메뉴');
+    메뉴.style.left = Math.min(x, window.innerWidth - 190) + 'px';
+    메뉴.style.top = Math.min(y + 40, window.innerHeight - 120) + 'px';
+    메뉴.classList.add('보임');
+  }
+  function 컨텍스트메뉴닫기(){ document.getElementById('컨텍스트메뉴').classList.remove('보임'); }
+
+  function 즐겨찾기토글(게임인덱스){
+    const 하트버튼 = document.querySelector(`.즐겨찾기버튼[data-게임인덱스="${게임인덱스}"]`);
+    const 번호배열 = 마지막생성결과[게임인덱스];
+    if(!번호배열) return;
+
+    if(즐겨찾기상태[게임인덱스]){
+      즐겨찾기상태[게임인덱스] = false;
+      하트버튼.textContent = '♡';
+      return;
+    }
+
+    하트버튼.textContent = '♥';
+    하트버튼.classList.add('애니메이션');
+    setTimeout(() => 하트버튼.classList.remove('애니메이션'), 400);
+    즐겨찾기상태[게임인덱스] = true;
+
+    if(!GAS환경인가()){
+      로컬즐겨찾기저장(게임인덱스 + 1, 번호배열);
+      토스트표시('✨ 로컬 즐겨찾기에 저장되었습니다.');
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler((응답) => {
+        토스트표시(응답 && 응답.성공 ? '✨ 즐겨찾기에 저장되었습니다.' : '⚠️ 저장에 실패했습니다.');
+      })
+      .withFailureHandler(() => 토스트표시('⚠️ 저장 중 오류가 발생했습니다.'))
+      .즐겨찾기저장(게임인덱스 + 1, 번호배열);
+  }
+
+  function 로컬즐겨찾기저장(게임번호, 번호배열){
+    const 기존 = JSON.parse(localStorage.getItem('luckyLab645_favorites') || '[]');
+    기존.unshift({ 저장날짜:new Date().toLocaleString('ko-KR'), 게임번호, 번호문자열:번호배열.join(', ') });
+    localStorage.setItem('luckyLab645_favorites', JSON.stringify(기존.slice(0, 50)));
+  }
+
+  function 즐겨찾기목록열기(){
+    const 배경 = document.getElementById('즐겨찾기모달배경');
+    const 영역 = document.getElementById('즐겨찾기목록영역');
+    배경.classList.add('보임');
+    영역.textContent = '불러오는 중...';
+
+    if(!GAS환경인가()){
+      const 목록 = JSON.parse(localStorage.getItem('luckyLab645_favorites') || '[]');
+      즐겨찾기목록그리기(목록);
+      return;
+    }
+
+    google.script.run
+      .withSuccessHandler((응답) => 즐겨찾기목록그리기(응답 && 응답.성공 ? 응답.데이터 : []))
+      .withFailureHandler(() => { 영역.textContent = '즐겨찾기 목록을 불러오지 못했습니다.'; })
+      .즐겨찾기목록가져오기();
+  }
+
+  function 즐겨찾기목록닫기(){ document.getElementById('즐겨찾기모달배경').classList.remove('보임'); }
+
+  function 즐겨찾기목록그리기(목록){
+    const 영역 = document.getElementById('즐겨찾기목록영역');
+    if(!목록 || 목록.length === 0){ 영역.textContent = '아직 저장된 즐겨찾기가 없습니다.'; return; }
+    영역.innerHTML = 목록.map((항목) => `
+      <div class="즐겨찾기항목">
+        <div class="즐겨찾기날짜">${항목.저장날짜} · GAME ${항목.게임번호}</div>
+        <div class="즐겨찾기번호">${항목.번호문자열}</div>
+      </div>`).join('');
+  }
+
+  function 번호복사(){
+    if(마지막생성결과.length === 0){ 토스트표시('먼저 번호를 추첨해주세요!'); return; }
+    const 텍스트 = 마지막생성결과.map((배열, i) => `GAME ${i + 1} : ${배열.join(', ')}`).join('\n');
+    클립보드에복사(텍스트, '📋 번호 복사 완료!');
+  }
+
+  function 단일번호복사(번호){ 클립보드에복사(String(번호), `📋 ${번호}번 복사 완료!`); }
+
+  async function 클립보드에복사(텍스트, 성공메시지){
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(텍스트);
+      } else {
+        const 임시입력창 = document.createElement('textarea');
+        임시입력창.value = 텍스트;
+        document.body.appendChild(임시입력창);
+        임시입력창.select();
+        document.execCommand('copy');
+        document.body.removeChild(임시입력창);
+      }
+      토스트표시(성공메시지);
+    } catch(e){
+      토스트표시('⚠️ 복사에 실패했습니다.');
+    }
+  }
+
+  function 토스트표시(메시지){
+    const 토스트엘리먼트 = document.getElementById('토스트');
+    토스트엘리먼트.textContent = 메시지;
+    토스트엘리먼트.classList.add('보임');
+    clearTimeout(토스트타이머);
+    토스트타이머 = setTimeout(() => 토스트엘리먼트.classList.remove('보임'), 2000);
+  }
+</script>
+</body>
+</html>
