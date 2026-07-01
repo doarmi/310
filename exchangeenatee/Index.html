@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Exchange Mate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 앱 아이콘: 지갑 아이콘 SVG -->
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="110" fill="%23F8FBFF"/>
+    <path d="M122 166 L348 120 Q392 112 400 156 L400 172" fill="none" stroke="%23000000" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="78" y="150" width="342" height="270" rx="52" fill="none" stroke="%23000000" stroke-width="28"/>
+    <rect x="314" y="246" width="122" height="92" rx="30" fill="%23F8FBFF" stroke="%23000000" stroke-width="28"/>
+    <circle cx="356" cy="292" r="13" fill="%23000000"/>
+  </svg>'>
+
+  <meta name="application-name" content="Exchange Mate">
+  <meta name="apple-mobile-web-app-title" content="Exchange Mate">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#F8FBFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#08111F" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    body.light {
+      background: linear-gradient(135deg, #f8fbff, #eaf4ff);
+      color: #1c1c1e;
+    }
+
+    body.dark {
+      background: radial-gradient(circle at top, #16345f, #050915 70%);
+      color: #ffffff;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+      text-align: center;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.48);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 32px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      animation: cardUp 0.5s ease;
+    }
+
+    body.dark .glass-card {
+      background: rgba(20, 30, 55, 0.58);
+      border: 1px solid rgba(120,180,255,0.25);
+      box-shadow: 0 20px 70px rgba(50,130,255,0.18);
+    }
+
+    .logo {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 12px;
+      border-radius: 24px;
+      background: #f8fbff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      font-size: 38px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      opacity: 0.72;
+      font-size: 15px;
+    }
+
+    .mode-row {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .toggle {
+      width: 58px;
+      height: 32px;
+      border-radius: 999px;
+      background: #d1d1d6;
+      padding: 3px;
+      cursor: pointer;
+      transition: 0.5s ease;
+    }
+
+    .toggle.active {
+      background: #34c759;
+    }
+
+    .toggle-circle {
+      width: 26px;
+      height: 26px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.5s ease;
+    }
+
+    .toggle.active .toggle-circle {
+      transform: translateX(26px);
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 800;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: none;
+      outline: none;
+      border-radius: 20px;
+      padding: 16px;
+      font-size: 16px;
+      background: rgba(255,255,255,0.75);
+    }
+
+    body.dark input,
+    body.dark select {
+      background: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    .currency-row {
+      display: grid;
+      grid-template-columns: 1fr 54px 1fr;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .swap-btn {
+      height: 54px;
+      border: none;
+      border-radius: 50%;
+      background: #34c759;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .swap-btn:active {
+      transform: scale(0.94) rotate(180deg);
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 16px;
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .primary {
+      background: #34c759;
+      color: white;
+    }
+
+    .secondary {
+      background: rgba(255,255,255,0.58);
+      color: #1c1c1e;
+    }
+
+    body.dark .secondary {
+      background: rgba(255,255,255,0.14);
+      color: white;
+    }
+
+    .receipt-card {
+      display: none;
+      border-radius: 32px;
+      padding: 26px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.14);
+      animation: receiptUp 0.5s ease forwards, floating 5s ease-in-out infinite;
+    }
+
+    body.dark .receipt-card {
+      background: rgba(15, 25, 48, 0.66);
+      border: 1px solid rgba(120,180,255,0.28);
+    }
+
+    .receipt-card.show {
+      display: block;
+    }
+
+    .receipt-line {
+      border-top: 2px dashed rgba(120,120,120,0.35);
+      margin: 18px 0;
+    }
+
+    .result-main {
+      font-size: 34px;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .small-info {
+      font-size: 13px;
+      opacity: 0.72;
+      line-height: 1.7;
+    }
+
+    .change-up {
+      color: #34c759;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .history-box {
+      display: none;
+      text-align: left;
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .history-item {
+      padding: 10px 12px;
+      border-radius: 16px;
+      margin-top: 8px;
+      background: rgba(255,255,255,0.35);
+      cursor: pointer;
+    }
+
+    body.dark .history-item {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .notice {
+      font-size: 12px;
+      opacity: 0.65;
+      line-height: 1.5;
+      margin-top: 16px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(30px);
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(25px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: 0.35s ease;
+      font-weight: 900;
+      z-index: 99;
+    }
+
+    body.dark .toast {
+      background: rgba(30,45,80,0.8);
+      color: white;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .loading {
+      display: none;
+      margin: 16px 0;
+      font-weight: 800;
+      opacity: 0.8;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    @keyframes cardUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes receiptUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes floating {
+      0%, 100% {
+        translate: 0 0;
+      }
+      50% {
+        translate: 0 -5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <div class="glass-card">
+      <div class="logo">💳</div>
+      <h1>Exchange Mate</h1>
+      <div class="subtitle">실시간 환율을 빠르고 간편하게 확인해보세요.</div>
+
+      <div class="mode-row">
+        <span>Light</span>
+        <div id="modeToggle" class="toggle" onclick="toggleMode()">
+          <div class="toggle-circle"></div>
+        </div>
+        <span>Dark</span>
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <label>금액 입력</label>
+      <input id="amountInput" type="text" placeholder="예: 100000" oninput="formatAmount()">
+
+      <div class="currency-row">
+        <div>
+          <label>기준 통화</label>
+          <select id="fromCurrency">
+            <option value="KRW">🇰🇷 KRW</option>
+            <option value="USD">🇺🇸 USD</option>
+            <option value="JPY">🇯🇵 JPY</option>
+            <option value="EUR">🇪🇺 EUR</option>
+            <option value="CNY">🇨🇳 CNY</option>
+            <option value="GBP">🇬🇧 GBP</option>
+            <option value="CAD">🇨🇦 CAD</option>
+            <option value="AUD">🇦🇺 AUD</option>
+          </select>
+        </div>
+
+        <button class="swap-btn" onclick="swapCurrency()">⇅</button>
+
+        <div>
+          <label>변환 통화</label>
+          <select id="toCurrency">
+            <option value="USD">🇺🇸 USD</option>
+            <option value="KRW">🇰🇷 KRW</option>
+            <option value="JPY">🇯🇵 JPY</option>
+            <option value="EUR">🇪🇺 EUR</option>
+            <option value="CNY">🇨🇳 CNY</option>
+            <option value="GBP">🇬🇧 GBP</option>
+            <option value="CAD">🇨🇦 CAD</option>
+            <option value="AUD">🇦🇺 AUD</option>
+          </select>
+        </div>
+      </div>
+
+      <label>여행 환전 우대율</label>
+      <input id="feeInput" type="number" placeholder="예: 90">
+
+      <button class="btn primary" onclick="calculateExchange()">환율 계산하기</button>
+      <button class="btn secondary" onclick="refreshRate()">환율 새로고침</button>
+      <button id="favoriteBtn" class="btn secondary" onclick="saveFavorite()">☆ 즐겨찾기 저장</button>
+      <button class="btn secondary" onclick="toggleHistory()">최근 기록 보기</button>
+    </div>
+
+    <div id="loading" class="loading">최신 환율을 확인 중입니다...</div>
+
+    <div id="resultCard" class="receipt-card">
+      <div>🌍 Exchange Mate</div>
+      <div class="receipt-line"></div>
+
+      <div id="originalText"></div>
+      <div style="font-size:22px; margin:10px 0;">↓</div>
+      <div id="resultText" class="result-main"></div>
+
+      <div class="receipt-line"></div>
+
+      <div id="rateInfo" class="small-info"></div>
+      <div id="changeInfo" class="change-up"></div>
+
+      <div class="receipt-line"></div>
+
+      <div id="travelInfo" class="small-info"></div>
+
+      <div class="notice">
+        본 앱의 환율 정보는 참고용이며,<br>
+        실제 환전 금액은 은행·카드사·환전 수수료에 따라 달라질 수 있습니다.
+      </div>
+    </div>
+
+    <div id="historyBox" class="glass-card history-box"></div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let currentResultData = null;
+
+    window.onload = function() {
+      loadMode();
+      showHistory();
+    };
+
+    function formatAmount() {
+      const input = document.getElementById("amountInput");
+      const onlyNumber = input.value.replace(/[^0-9]/g, "");
+
+      if (!onlyNumber) {
+        input.value = "";
+        return;
+      }
+
+      input.value = Number(onlyNumber).toLocaleString();
+    }
+
+    function getAmountNumber() {
+      const value = document.getElementById("amountInput").value.replace(/,/g, "");
+      return Number(value);
+    }
+
+    function calculateExchange() {
+      const amount = getAmountNumber();
+      const fromCurrency = document.getElementById("fromCurrency").value;
+      const toCurrency = document.getElementById("toCurrency").value;
+
+      if (!amount || amount <= 0) {
+        showToast("금액을 올바르게 입력해주세요.");
+        return;
+      }
+
+      if (fromCurrency === toCurrency) {
+        showToast("같은 통화끼리는 계산할 수 없습니다.");
+        return;
+      }
+
+      document.getElementById("loading").classList.add("show");
+
+      google.script.run
+        .withSuccessHandler(function(data) {
+          document.getElementById("loading").classList.remove("show");
+
+          if (!data.success) {
+            showToast(data.message);
+            return;
+          }
+
+          const rate = data.rates[toCurrency];
+          const result = amount * rate;
+
+          renderResult(amount, fromCurrency, toCurrency, result, rate, data.updateTime);
+          saveHistory(amount, fromCurrency, toCurrency, result);
+        })
+        .withFailureHandler(function(error) {
+          document.getElementById("loading").classList.remove("show");
+          showToast("환율 정보를 불러오는 중 오류가 발생했습니다.");
+        })
+        .getExchangeRates(fromCurrency);
+    }
+
+    function renderResult(amount, fromCurrency, toCurrency, result, rate, updateTime) {
+      const resultCard = document.getElementById("resultCard");
+
+      document.getElementById("originalText").innerText =
+        amount.toLocaleString() + " " + fromCurrency;
+
+      countUpResult(result, toCurrency);
+
+      document.getElementById("rateInfo").innerHTML =
+        "적용 환율<br>1 " + fromCurrency + " = " + rate.toFixed(4) + " " + toCurrency +
+        "<br>업데이트<br>" + updateTime;
+
+      document.getElementById("changeInfo").innerText = "▲ 실시간 환율 기준";
+
+      const feeValue = Number(document.getElementById("feeInput").value);
+
+      if (feeValue > 0) {
+        const benefitResult = result * (feeValue / 100);
+        document.getElementById("travelInfo").innerText =
+          "여행 환전 우대율 " + feeValue + "% 적용 참고 금액: " +
+          benefitResult.toLocaleString(undefined, { maximumFractionDigits: 2 }) + " " + toCurrency;
+      } else {
+        document.getElementById("travelInfo").innerText =
+          "여행 환전 우대율을 입력하면 참고 금액을 확인할 수 있습니다.";
+      }
+
+      currentResultData = {
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+        amount: amount,
+        result: result.toFixed(2)
+      };
+
+      resultCard.classList.add("show");
+      showToast("✓ 계산 완료");
+    }
+
+    function countUpResult(finalValue, currency) {
+      const resultText = document.getElementById("resultText");
+      const duration = 600;
+      const startTime = performance.now();
+
+      function animate(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const value = finalValue * progress;
+
+        resultText.innerText =
+          value.toLocaleString(undefined, { maximumFractionDigits: 2 }) + " " + currency;
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function swapCurrency() {
+      const from = document.getElementById("fromCurrency");
+      const to = document.getElementById("toCurrency");
+
+      const temp = from.value;
+      from.value = to.value;
+      to.value = temp;
+
+      showToast("통화가 바뀌었습니다.");
+
+      if (getAmountNumber() > 0) {
+        calculateExchange();
+      }
+    }
+
+    function refreshRate() {
+      showToast("환율 정보를 새로고침합니다.");
+      calculateExchange();
+    }
+
+    function saveFavorite() {
+      if (!currentResultData) {
+        showToast("먼저 계산을 해주세요.");
+        return;
+      }
+
+      const btn = document.getElementById("favoriteBtn");
+      btn.innerText = "★ 저장 중...";
+
+      google.script.run
+        .withSuccessHandler(function() {
+          btn.innerText = "★ 즐겨찾기 저장됨";
+          showToast("즐겨찾기에 저장되었습니다.");
+        })
+        .withFailureHandler(function(error) {
+          btn.innerText = "☆ 즐겨찾기 저장";
+          showToast("저장 중 오류가 발생했습니다.");
+        })
+        .saveFavorite(currentResultData);
+    }
+
+    function saveHistory(amount, fromCurrency, toCurrency, result) {
+      let history = JSON.parse(localStorage.getItem("exchangeHistory") || "[]");
+
+      history.unshift({
+        amount: amount,
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+        result: result.toFixed(2),
+        time: new Date().toLocaleString()
+      });
+
+      history = history.slice(0, 10);
+
+      localStorage.setItem("exchangeHistory", JSON.stringify(history));
+      showHistory();
+    }
+
+    function showHistory() {
+      const box = document.getElementById("historyBox");
+      const history = JSON.parse(localStorage.getItem("exchangeHistory") || "[]");
+
+      if (history.length === 0) {
+        box.innerHTML = "<b>최근 계산 내역</b><br>아직 기록이 없습니다.";
+        return;
+      }
+
+      box.innerHTML = "<b>최근 계산 내역</b>";
+
+      history.forEach(function(item) {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerText =
+          item.amount.toLocaleString() + " " + item.fromCurrency +
+          " → " + item.result + " " + item.toCurrency +
+          "\n" + item.time;
+
+        div.onclick = function() {
+          document.getElementById("amountInput").value = item.amount.toLocaleString();
+          document.getElementById("fromCurrency").value = item.fromCurrency;
+          document.getElementById("toCurrency").value = item.toCurrency;
+          calculateExchange();
+        };
+
+        box.appendChild(div);
+      });
+    }
+
+    function toggleHistory() {
+      const box = document.getElementById("historyBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      const toggle = document.getElementById("modeToggle");
+
+      if (body.classList.contains("dark")) {
+        body.className = "light";
+        toggle.classList.remove("active");
+        localStorage.setItem("theme", "light");
+      } else {
+        body.className = "dark";
+        toggle.classList.add("active");
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    function loadMode() {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      const toggle = document.getElementById("modeToggle");
+
+      document.body.className = savedTheme;
+
+      if (savedTheme === "dark") {
+        toggle.classList.add("active");
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+
+      toast.innerText = message;
+      toast.classList.add("show");
+
+      setTimeout(function() {
+        toast.classList.remove("show");
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
