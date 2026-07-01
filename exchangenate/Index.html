@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Exchange Mate 앱 아이콘 / SVG Data 방식 -->
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="%23F8FBFF"/>
+  <path d="M120 165 L350 120 Q394 112 400 155 L400 170"
+        fill="none" stroke="%23000000" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="80" y="150" width="340" height="270" rx="50"
+        fill="none" stroke="%23000000" stroke-width="28" stroke-linejoin="round"/>
+  <rect x="315" y="245" width="120" height="92" rx="30"
+        fill="%23F8FBFF" stroke="%23000000" stroke-width="28" stroke-linejoin="round"/>
+  <circle cx="355" cy="291" r="13" fill="%23000000"/>
+</svg>'>
+
+<!-- iPhone / 모바일 홈 화면 아이콘 -->
+<link rel="apple-touch-icon" href='data:image/svg+xml;utf8,
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="%23F8FBFF"/>
+  <path d="M120 165 L350 120 Q394 112 400 155 L400 170"
+        fill="none" stroke="%23000000" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="80" y="150" width="340" height="270" rx="50"
+        fill="none" stroke="%23000000" stroke-width="28" stroke-linejoin="round"/>
+  <rect x="315" y="245" width="120" height="92" rx="30"
+        fill="%23F8FBFF" stroke="%23000000" stroke-width="28" stroke-linejoin="round"/>
+  <circle cx="355" cy="291" r="13" fill="%23000000"/>
+</svg>'>
+
+<!-- 모바일 웹앱 설정 -->
+<meta name="application-name" content="Exchange Mate">
+<meta name="apple-mobile-web-app-title" content="Exchange Mate">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- 라이트모드 브라우저 UI 색상 -->
+<meta
+  name="theme-color"
+  content="#F8FBFF"
+  media="(prefers-color-scheme: light)"
+>
+
+<!-- 다크모드 브라우저 UI 색상 -->
+<meta
+  name="theme-color"
+  content="#08111F"
+  media="(prefers-color-scheme: dark)"
+>
+
+<!-- iPhone 상태바 스타일 -->
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Lucky Lab 645</title>
+<!-- App icon (favicon), embedded as base64 so a single Index.html file is enough -->
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAG9klEQVR42sWXS2ycVxXHf+d+j5nM22PHJU7ixE3SPGjTKClNaKs0UhRRJEQLEggUkFghsS4sUCU2sENIgFhVdIEqVeURonTTiIcSSvqgJUkJCc6D2onj2GNPZjwve+Z73ctixs+xHZCQcjd3RvPNvf/vnP85//8RrbXhIS7FQ172gx4wxizb55cA64VORJbtaz63Vgq01hhjaP9fVoCav2T17ytfQABlWf89gDAMUUqtil5EFi8yS8LRucyY1UForbFte/0UCOAHAZZloZR0HaaUEASaRjPA8yO0bkfIUoqYa5FM2NiWYuU7KSWAIggCHMdZPQIiQhiGaK1xHGcx56aNTES4X2nR9CKScRvHaV+ktcH3Q+ZaIdpATzZObyaGXskZEYIgQCmFbdsL5y8D0Gq1sG0bJaoTXYMgIFAotbCU0JuLoRRoDaqTC20MnhdSbXiUaj6ZpMvgI0mWBkIAbTRhGBKPxxcA2CvzJCKYJfwWgalyi0TcIpd20aEgIdgKfB1hSTtVMdcmnxGUEu6VmoiCwf4kkTaLgRRZIPeqHFhJIssSKnWfphexMR8n8KEQ3qMUFcjSy1BiO14UEXNg1gMvgL6Mgx9qJsoeuaRLOuEsgFitnJcAMB1WmyWlCNPlFumkTRQIN1pX8bxZstLDHyq/Z2/yEEcHjnL5bsCNiosXWTihz+d22myIaybKLXYnbAwGeWAnNIsgjGmHfq4V0vRClChmmlWGZy7TGIZr58bQoy6vffQ6w5PCqx/C7sQUhzaM8MH1IqcuNdmUc5j1NX6gF9JkTHf3UsuSvYDEYCmhUvOYa3pEYYibzHB16gbjwT8IrVHs5vucHNB4078kMXeV0r1x3n/nHLnmHS78s4hrt0t5pjZHEISd47sRLNOCxZ8FP4i4O1FmfLyIsS1Sd+7y4sWQf/3qR3w88gu++exBTjz+A54caPK9bS/z7sWr3ChlePP8PQ4/5hJFmg0SMlW4T+F+HUupDr9kfS0wxqCU0GoGlIolQmORunIFhxb7j3ydHRfGmZYPifd9mTNvjTA09AL71JtUh9/i0sR3OLl7M0eS/VRmPa4PjyBRiz0b4ohqq4fBrANgvvdog21bJBIueqKOVfyEU705yuUyx598gtTYr6mOnGFjz7PYtY8ZHR5h2+wzPPf8EY5+NeTtM7fZWOthx76tFMcm6e1JEUV6VfVaEQHTLkXAthX5XJKZkSITF68Qe2o/WzNZbp8/T/OOy76nXyXZeJ1qpQDTZfbKTZzmbzn7l0EmKjO0JvZw6PkdVCaLpNMJoihaVT27ONCuAg0i9OeTmHyKf1t5tpw6jfz4J0z96Tw7T/6QgS+cpWfwGGo0wux+hSde+T6HBy/RPP9Hbo0acgM2M9P3icdjuI7ViYB5sB+YbxQ60mSzabYNpLj2mSPYWzeTmxlj58vfZcuLn0e7Nj2PfZvevbe5dvhLvPb2exzv3Ul/9B7bj3yFpw/1M3JjlP37dxEGYds/rKKWXRyY7wHaGBzHYmhwEzoy3EolUFuOkdmcZ7xQw03EsYwQmxxB/vY7ntr8acoXThN75gTf+sZBpoav0d+fJ5dJ4HlBW12hqwyX+YF6vY5tO8tdj4FafZZabY7LV8eo1H0yuQy5bIJETx7776epv/MbiontqEcPcvhrJ6lOF5ipzXHsuQP4vt/Rl/aKopBUKrU2AMvqNg3lcp1kIk6+N8t0qcHoWJFao4WIoOIJlD9LLh1jaMdWxj4Z5eyfP+LAgT0c/ezjnSa0aJ0iHZFOp9fmwLwizjfHKDIkkxtoNj3eeOM0fb1Zdu16lG2fyiMdXQ61i2O7lCYL3L47RTabplafY6bSINOpABHpEqIuP1Cr1gBBVPthP4iYbTQZ2LSRm7dGOH7iBZotj3Qmh+PYKMCgmS4UeOmlL/Lzn/2Uiclp7pdrlCsNenvTbBnoI5tK4rr2gsfMZDLdfgBAWYogCHEsZ0G3W57P9Zu36cvnePev55iYnGJissDUdJFqtUoUhmAMQ0PbmZwsMl0sU5gqU6rW0RLRk0uTiMdwXLvjtuz1LVm5VCaRSGKMxpi2i5mpNmg05rAsCxEhijS+H+L5Ia2WT6Qjms0W1VoNUYp4Is4j/XkG+vtIJeLEHBtlKZrNOfL5/OqWbB5EvV5ntjFLMpkCmdcGtRAN3w/w/YAwioiiCG0MIoJt28RiLvGYS8xxOqbWLPCp0WiQSiVJp9PLuNBly0WEWq1Gvd7AdV0sy+5YcUF1dhFZEDXpfDAYjG63ct2JnjGGMAwJAp90OrUs9+vOBSKC7/vU63UCP0AbvUJGzaKB6lRL93DS9oeO45BOp3Fdd/0qWGu0Wjol/S9LRFBKrekFHwjg/7XmW/tDm44fMJvyH6riyLcHAPveAAAAAElFTkSuQmCC">
+<style>
+  /* ============================================
+     공통 변수 (라이트모드 기본값)
+     ============================================ */
+  :root{
+    --배경색1: #eef4fb;         /* Ice blue */
+    --배경색2: #f7f9fc;         /* Light gray */
+    --배경색3: #e8f1ff;
+    --글자색: #1c1c1e;
+    --보조글자색: #6e6e73;
+    --카드배경: rgba(255,255,255,0.55);
+    --카드테두리: rgba(255,255,255,0.6);
+    --오브배경: rgba(255,255,255,0.45);
+    --오브테두리: rgba(255,255,255,0.7);
+    --프라이머리: #34C759;
+    --블루글로우: rgba(88,150,255,0.35);
+    --그림자색: rgba(31,58,102,0.15);
+    --블러강도: 26px;
+    --전환시간: 0.5s;
+  }
+
+  /* Dark mode variables (applied when body.dark class is added) */
+  body.dark{
+    --배경색1: #0b1224;         /* Deep navy */
+    --배경색2: #12172a;         /* Dark gray */
+    --배경색3: #101a30;
+    --글자색: #f2f2f7;
+    --보조글자색: #9a9ab0;
+    --카드배경: rgba(30,36,58,0.55);
+    --카드테두리: rgba(255,255,255,0.12);
+    --오브배경: rgba(255,255,255,0.06);
+    --오브테두리: rgba(120,160,255,0.35);
+    --프라이머리: #34C759;
+    --블루글로우: rgba(90,150,255,0.55);
+    --그림자색: rgba(0,0,0,0.45);
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Malgun Gothic", sans-serif;
+    color: var(--글자색);
+    background: radial-gradient(circle at 20% 10%, var(--배경색3), var(--배경색1) 60%, var(--배경색2));
+    transition: background var(--전환시간) ease, color var(--전환시간) ease;
+    display:flex;
+    justify-content:center;
+    padding: 24px 14px 60px;
+  }
+
+  .앱컨테이너{
+    width:100%;
+    max-width: 480px;
+    text-align:center; /* Center align everything */
+  }
+
+  /* ============================================
+     상단 영역
+     ============================================ */
+  .상단영역{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    margin-bottom: 22px;
+    position:relative;
+  }
+  .로고이미지{
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    filter: drop-shadow(0 6px 14px var(--그림자색));
+  }
+  .앱제목{ font-size: 26px; font-weight:800; letter-spacing:-0.5px; margin:0; }
+  .서브타이틀{ font-size: 13px; color: var(--보조글자색); margin:0; }
+
+  /* Dark mode toggle (iOS style switch) */
+  .모드토글{
+    position:absolute;
+    top:0; right:0;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .토글아이콘{ font-size:14px; }
+  .토글스위치{
+    width:48px; height:28px;
+    border-radius: 999px;
+    background: rgba(120,120,128,0.28);
+    position:relative;
+    transition: background var(--전환시간) ease;
+  }
+  body.dark .토글스위치{ background: var(--프라이머리); }
+  .토글손잡이{
+    position:absolute;
+    top:2px; left:2px;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: transform 0.35s cubic-bezier(.4,1.6,.4,1);
+  }
+  body.dark .토글손잡이{ transform: translateX(20px); }
+
+  /* ============================================
+     글래스 카드 공통 스타일
+     ============================================ */
+  .글래스카드{
+    background: var(--카드배경);
+    border: 1px solid var(--카드테두리);
+    border-radius: 28px;
+    backdrop-filter: blur(var(--블러강도));
+    -webkit-backdrop-filter: blur(var(--블러강도));
+    box-shadow: 0 12px 30px var(--그림자색);
+    padding: 20px;
+    margin-bottom: 18px;
+    transition: background var(--전환시간) ease, border-color var(--전환시간) ease;
+  }
+
+  /* ============================================
+     설정 영역
+     ============================================ */
+  .설정라벨{
+    font-size: 13px;
+    font-weight:700;
+    color: var(--보조글자색);
+    text-align:left;
+    margin: 4px 2px 8px;
+  }
+
+  .게임수선택{
+    width:100%;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--카드테두리);
+    background: var(--오브배경);
+    color: var(--글자색);
+    font-size:15px;
+    font-weight:600;
+    text-align:center;
+    appearance:none;
+    -webkit-appearance:none;
+    outline:none;
+    margin-bottom: 16px;
+  }
+
+  .제외입력창{
+    width:100%;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--카드테두리);
+    background: var(--오브배경);
+    color: var(--글자색);
+    font-size:14px;
+    text-align:center;
+    outline:none;
+    margin-bottom: 14px;
+  }
+  .제외입력창::placeholder{ color: var(--보조글자색); }
+
+  /* Recently excluded numbers display bar */
+  .최근제외표시{
+    min-height: 18px;
+    font-size: 12px;
+    color: var(--프라이머리);
+    font-weight:700;
+    margin-bottom: 10px;
+    word-break: break-all;
+  }
+
+  /* Grid that displays 1-45 checkboxes as Glass Chips */
+  .제외그리드{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .제외칩{
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 13px;
+    font-weight:700;
+    background: var(--오브배경);
+    border: 1px solid var(--오브테두리);
+    color: var(--글자색);
+    cursor:pointer;
+    transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+  .제외칩:active{ transform: scale(0.9); }
+  .제외칩.선택됨{
+    background: var(--프라이머리);
+    color:#fff;
+    border-color: var(--프라이머리);
+    transform: scale(1.1);
+    box-shadow: 0 0 14px var(--블루글로우);
+  }
+
+  .경고문구{
+    font-size:12px;
+    color:#ff453a;
+    font-weight:700;
+    margin: 4px 0 6px;
+    display:none;
+  }
+  .경고문구.보임{ display:block; }
+
+  /* ============================================
+     버튼 영역 (iOS 캡슐형 버튼)
+     ============================================ */
+  .버튼영역{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-bottom: 18px;
+  }
+
+  .캡슐버튼{
+    flex: 1 1 auto;
+    min-width: 130px;
+    padding: 14px 18px;
+    border:none;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight:700;
+    cursor:pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .캡슐버튼:active{ transform: scale(0.97); }
+
+  .버튼-primary{
+    background: var(--프라이머리);
+    color:#fff;
+    box-shadow: 0 8px 20px rgba(52,199,89,0.35);
+  }
+  .버튼-secondary{
+    background: var(--오브배경);
+    color: var(--글자색);
+    border: 1px solid var(--카드테두리);
+  }
+  .캡슐버튼:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  /* ============================================
+     결과 영역
+     ============================================ */
+  .결과영역{ min-height: 60px; }
+
+  .로딩표시{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    padding: 30px 10px;
+    color: var(--보조글자색);
+    font-weight:600;
+    font-size:14px;
+  }
+  .로딩표시.보임{ display:flex; }
+  .로딩스피너{
+    width:34px; height:34px;
+    border-radius:50%;
+    border: 3px solid rgba(120,120,128,0.25);
+    border-top-color: var(--프라이머리);
+    animation: 스핀 0.8s linear infinite;
+  }
+  @keyframes 스핀{ to{ transform: rotate(360deg); } }
+
+  .게임보드{
+    opacity:0;
+    transform: translateY(20px);
+    animation: 카드등장 0.5s ease forwards;
+  }
+  @keyframes 카드등장{
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .게임보드헤더{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 12px;
+  }
+  .게임번호라벨{
+    font-size: 13px;
+    font-weight:800;
+    color: var(--보조글자색);
+    background: var(--오브배경);
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .즐겨찾기버튼{
+    background:none;
+    border:none;
+    font-size: 20px;
+    cursor:pointer;
+    transition: transform 0.25s ease;
+  }
+  .즐겨찾기버튼.애니메이션{ animation: 하트펄스 0.4s ease; }
+  @keyframes 하트펄스{
+    0%{ transform: scale(1); }
+    50%{ transform: scale(1.3); }
+    100%{ transform: scale(1); }
+  }
+
+  .번호목록{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 10px;
+  }
+
+  /* Glass Orb number ball */
+  .번호오브{
+    width: 52px; height:52px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 17px;
+    font-weight:800;
+    color: var(--글자색);
+    background: var(--오브배경);
+    border: 1px solid var(--오브테두리);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6);
+    position:relative;
+    overflow:hidden;
+    opacity:0;
+    transform: scale(0.8);
+    animation: 오브등장 0.45s ease forwards, 오브플로팅 3s ease-in-out infinite;
+    animation-delay: var(--지연시간), calc(var(--지연시간) + 0.5s);
+    cursor:pointer;
+    transition: box-shadow 0.25s ease;
+  }
+  .번호오브:active{ transform: scale(0.95) !important; }
+  .번호오브::after{
+    /* Subtle reflection highlight */
+    content:"";
+    position:absolute;
+    top:-40%; left:-60%;
+    width:60%; height:180%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.55), transparent 60%);
+    transform: rotate(20deg);
+    pointer-events:none;
+  }
+
+  @keyframes 오브등장{
+    to{ opacity:1; transform: scale(1); }
+  }
+  @keyframes 오브플로팅{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-4px); }
+  }
+
+  /* Accent color per number range (lotto-style colors) */
+  .번호오브[data-구간="1"]{ box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6), 0 0 0 2px rgba(255,201,60,0.5) inset; }
+  .번호오브[data-구간="2"]{ box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6), 0 0 0 2px rgba(93,173,255,0.5) inset; }
+  .번호오브[data-구간="3"]{ box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6), 0 0 0 2px rgba(255,99,99,0.5) inset; }
+  .번호오브[data-구간="4"]{ box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6), 0 0 0 2px rgba(150,150,150,0.5) inset; }
+  .번호오브[data-구간="5"]{ box-shadow: 0 6px 14px var(--그림자색), inset 0 1px 2px rgba(255,255,255,0.6), 0 0 0 2px rgba(120,220,140,0.5) inset; }
+
+  /* ============================================
+     안내 문구
+     ============================================ */
+  .안내문구{
+    font-size: 11.5px;
+    color: var(--보조글자색);
+    line-height:1.5;
+    margin-top: 20px;
+    padding: 0 8px;
+  }
+
+  /* ============================================
+     Toast 알림 (Dynamic Island 느낌)
+     ============================================ */
+  .토스트{
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translate(-50%, 20px);
+    background: rgba(28,28,30,0.85);
+    color:#fff;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight:600;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 999;
+    white-space:nowrap;
+  }
+  .토스트.보임{
+    opacity:1;
+    transform: translate(-50%, 0);
+  }
+
+  /* iOS-style context menu shown on long press */
+  .컨텍스트메뉴{
+    position: fixed;
+    background: var(--카드배경);
+    border: 1px solid var(--카드테두리);
+    border-radius: 16px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 10px 30px var(--그림자색);
+    overflow:hidden;
+    z-index: 1000;
+    display:none;
+    min-width: 170px;
+  }
+  .컨텍스트메뉴.보임{ display:block; }
+  .컨텍스트메뉴 button{
+    width:100%;
+    padding: 12px 16px;
+    background:none;
+    border:none;
+    border-bottom: 1px solid var(--카드테두리);
+    color: var(--글자색);
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    text-align:left;
+  }
+  .컨텍스트메뉴 button:last-child{ border-bottom:none; }
+
+  @media (max-width: 360px){
+    .번호오브{ width:46px; height:46px; font-size:15px; }
+    .캡슐버튼{ min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="앱컨테이너">
+
+  <!-- ============ Header Section ============ -->
+  <div class="상단영역">
+    <img class="로고이미지" src="data:image/png;base64,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" alt="Lucky Lab 645 icon">
+    <h1 class="앱제목">Lucky Lab 645</h1>
+    <p class="서브타이틀">당신의 행운 번호를 연구합니다 ✨</p>
+
+    <!-- Dark mode / Light mode toggle -->
+    <div class="모드토글" id="모드토글버튼">
+      <span class="토글아이콘">☀️</span>
+      <div class="토글스위치"><div class="토글손잡이"></div></div>
+    </div>
+  </div>
+
+  <!-- ============ Settings Section ============ -->
+  <div class="글래스카드">
+    <div class="설정라벨">게임 수 선택</div>
+    <select id="게임수선택" class="게임수선택">
+      <option value="1">1게임</option>
+      <option value="3">3게임</option>
+      <option value="5">5게임</option>
+      <option value="10">10게임</option>
+    </select>
+
+    <div class="설정라벨">제외 번호 입력 (예: 4, 13, 44)</div>
+    <input type="text" id="제외입력창" class="제외입력창" placeholder="쉼표로 구분하여 입력하세요">
+
+    <div class="최근제외표시" id="최근제외표시">선택된 제외 번호가 없습니다.</div>
+
+    <div class="설정라벨">1 ~ 45 번호에서 제외할 번호를 선택하세요</div>
+    <div class="제외그리드" id="제외그리드"></div>
+
+    <div class="경고문구" id="경고문구">⚠️ 제외 번호가 40개 이상이면 추첨할 수 없습니다.</div>
+  </div>
+
+  <!-- ============ Buttons Section ============ -->
+  <div class="버튼영역">
+    <button class="캡슐버튼 버튼-primary" id="추첨버튼">🎲 번호 추첨하기</button>
+    <button class="캡슐버튼 버튼-secondary" id="복사버튼">📋 번호 복사</button>
+    <button class="캡슐버튼 버튼-secondary" id="제외초기화버튼">🔄 제외 번호 초기화</button>
+  </div>
+
+  <!-- ============ Results Section ============ -->
+  <div class="결과영역" id="결과영역">
+    <div class="로딩표시" id="로딩표시">
+      <div class="로딩스피너"></div>
+      <div>Generating Lucky Numbers...<br>행운 번호를 연구 중입니다...</div>
+    </div>
+    <div id="게임보드컨테이너"></div>
+  </div>
+
+  <!-- ============ Disclaimer Text ============ -->
+  <p class="안내문구">
+    본 앱은 재미와 편의를 위한 랜덤 번호 생성 서비스이며,<br>
+    실제 당첨을 보장하지 않습니다.
+  </p>
+</div>
+
+<!-- Toast notification -->
+<div class="토스트" id="토스트"></div>
+
+<!-- Context menu shown on long press -->
+<div class="컨텍스트메뉴" id="컨텍스트메뉴">
+  <button id="메뉴복사">📋 번호 복사</button>
+  <button id="메뉴제외추가">🚫 제외 번호 추가</button>
+</div>
+
+<script>
+  // ============================================
+  // Global state variables
+  // ============================================
+  var 선택된제외번호 = new Set();   // excluded numbers selected via checkboxes
+  var 마지막생성결과 = [];          // numbers from the most recently drawn games (used for copying)
+  var 즐겨찾기상태 = {};            // favorite status per game index
+  var 컨텍스트메뉴대상번호 = null;   // the value of the long-pressed number orb
+
+  // ============================================
+  // Initialization: runs when the page loads
+  // ============================================
+  window.addEventListener('DOMContentLoaded', function(){
+    저장된모드적용();
+    제외그리드생성();
+    이벤트등록();
+  });
+
+  // --------------------------------------------
+  // Load the saved dark/light mode from localStorage and apply it
+  // --------------------------------------------
+  function 저장된모드적용(){
+    var 저장된모드 = localStorage.getItem('luckyLab645_theme');
+    if(저장된모드 === 'dark'){
+      document.body.classList.add('dark');
+      document.querySelector('.토글아이콘').textContent = '🌙';
+    }
+  }
+
+  // --------------------------------------------
+  // Renders numbers 1-45 as checkbox-style Glass Chips
+  // --------------------------------------------
+  function 제외그리드생성(){
+    var 그리드 = document.getElementById('제외그리드');
+    var html = '';
+    for(var 번호 = 1; 번호 <= 45; 번호++){
+      html += '<div class="제외칩" data-번호="' + 번호 + '">' + 번호 + '</div>';
+    }
+    그리드.innerHTML = html;
+  }
+
+  // --------------------------------------------
+  // Register all event listeners at once
+  // --------------------------------------------
+  function 이벤트등록(){
+    // Dark mode toggle click
+    document.getElementById('모드토글버튼').addEventListener('click', 모드전환);
+
+    // Exclude-number chip click - using event delegation
+    document.getElementById('제외그리드').addEventListener('click', function(e){
+      var 칩 = e.target.closest('.제외칩');
+      if(!칩) return;
+      var 번호 = parseInt(칩.dataset.번호, 10);
+      칩클릭처리(번호, 칩);
+    });
+
+    // When typing into the exclude-number input field
+    document.getElementById('제외입력창').addEventListener('input', 최근제외표시갱신);
+
+    // Buttons
+    document.getElementById('추첨버튼').addEventListener('click', 번호추첨시작);
+    document.getElementById('복사버튼').addEventListener('click', 번호복사);
+    document.getElementById('제외초기화버튼').addEventListener('click', 제외번호초기화);
+
+    // Context menu items
+    document.getElementById('메뉴복사').addEventListener('click', function(){
+      단일번호복사(컨텍스트메뉴대상번호);
+      컨텍스트메뉴닫기();
+    });
+    document.getElementById('메뉴제외추가').addEventListener('click', function(){
+      var 칩 = document.querySelector('.제외칩[data-번호="' + 컨텍스트메뉴대상번호 + '"]');
+      if(칩) 칩클릭처리(컨텍스트메뉴대상번호, 칩, true);
+      컨텍스트메뉴닫기();
+    });
+
+    // Close the context menu when clicking anywhere on screen
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('.컨텍스트메뉴')) 컨텍스트메뉴닫기();
+    });
+  }
+
+  // --------------------------------------------
+  // Toggle between dark mode and light mode
+  // --------------------------------------------
+  function 모드전환(){
+    var 다크모드여부 = document.body.classList.toggle('dark');
+    document.querySelector('.토글아이콘').textContent = 다크모드여부 ? '🌙' : '☀️';
+    // Save the selected mode to localStorage so it persists on next visit
+    localStorage.setItem('luckyLab645_theme', 다크모드여부 ? 'dark' : 'light');
+  }
+
+  // --------------------------------------------
+  // Handles a click on an exclude-number chip (checkbox)
+  // --------------------------------------------
+  function 칩클릭처리(번호, 칩엘리먼트){
+    if(선택된제외번호.has(번호)){
+      선택된제외번호.delete(번호);
+      칩엘리먼트.classList.remove('선택됨');
+    } else {
+      선택된제외번호.add(번호);
+      칩엘리먼트.classList.add('선택됨');
+    }
+    최근제외표시갱신();
+  }
+
+  // --------------------------------------------
+  // Combine the input field text with the checkbox selections and
+  // update the "recently excluded numbers" area and warning text
+  // --------------------------------------------
+  function 최근제외표시갱신(){
+    var 전체제외번호 = 전체제외번호가져오기();
+    var 표시영역 = document.getElementById('최근제외표시');
+    var 경고문구 = document.getElementById('경고문구');
+
+    if(전체제외번호.length === 0){
+      표시영역.textContent = '선택된 제외 번호가 없습니다.';
+    } else {
+      표시영역.textContent = '최근 제외 번호: ' + 전체제외번호.join(', ');
+    }
+
+    // Show a warning and disable the draw button if 40+ numbers are excluded
+    var 추첨버튼 = document.getElementById('추첨버튼');
+    if(전체제외번호.length >= 40){
+      경고문구.classList.add('보임');
+      추첨버튼.disabled = true;
+    } else {
+      경고문구.classList.remove('보임');
+      추첨버튼.disabled = false;
+    }
+  }
+
+  // --------------------------------------------
+  // Combine the input field string with the checkbox selections
+  // and return a deduplicated array of excluded numbers (range 1-45)
+  // --------------------------------------------
+  function 전체제외번호가져오기(){
+    var 결과집합 = new Set(선택된제외번호);
+    var 입력값 = document.getElementById('제외입력창').value;
+
+    if(입력값.trim() !== ''){
+      입력값.split(',').forEach(function(조각){
+        var 숫자 = parseInt(조각.trim(), 10);
+        if(!isNaN(숫자) && 숫자 >= 1 && 숫자 <= 45){
+          결과집합.add(숫자);
+        }
+      });
+    }
+    return Array.from(결과집합);
+  }
+
+  // --------------------------------------------
+  // Reset all excluded numbers
+  // --------------------------------------------
+  function 제외번호초기화(){
+    선택된제외번호.clear();
+    document.getElementById('제외입력창').value = '';
+    document.querySelectorAll('.제외칩.선택됨').forEach(function(칩){
+      칩.classList.remove('선택됨');
+    });
+    최근제외표시갱신();
+    토스트표시('🔄 제외 번호가 초기화되었습니다.');
+  }
+
+  // --------------------------------------------
+  // [Core feature] Start the number draw
+  // Button click -> show loading -> show results after 0.8-1s
+  // --------------------------------------------
+  function 번호추첨시작(){
+    var 제외번호목록 = 전체제외번호가져오기();
+
+    if(제외번호목록.length >= 40){
+      토스트표시('⚠️ 제외 번호가 너무 많아 추첨할 수 없습니다.');
+      return;
+    }
+
+    // Safety check: can't draw if fewer than 6 numbers are available
+    var 후보풀 = [];
+    for(var i = 1; i <= 45; i++){
+      if(제외번호목록.indexOf(i) === -1) 후보풀.push(i);
+    }
+    if(후보풀.length < 6){
+      토스트표시('⚠️ 선택 가능한 번호가 부족합니다.');
+      return;
+    }
+
+    var 게임수 = parseInt(document.getElementById('게임수선택').value, 10);
+
+    // Turn on the loading indicator and blur the existing results
+    var 로딩표시 = document.getElementById('로딩표시');
+    var 보드컨테이너 = document.getElementById('게임보드컨테이너');
+    로딩표시.classList.add('보임');
+    보드컨테이너.style.opacity = '0.3';
+    보드컨테이너.style.filter = 'blur(6px)';
+    document.getElementById('추첨버튼').disabled = true;
+
+    // Calculate and show results after a random 0.8-1s delay (per requirements)
+    var 지연시간 = 800 + Math.random() * 200;
+
+    setTimeout(function(){
+      var 전체게임결과 = [];
+      for(var g = 0; g < 게임수; g++){
+        전체게임결과.push(게임번호생성(후보풀));
+      }
+      마지막생성결과 = 전체게임결과;
+      즐겨찾기상태 = {};
+
+      로딩표시.classList.remove('보임');
+      보드컨테이너.style.opacity = '1';
+      보드컨테이너.style.filter = 'none';
+      document.getElementById('추첨버튼').disabled = false;
+
+      결과화면그리기(전체게임결과);
+    }, 지연시간);
+  }
+
+  // --------------------------------------------
+  // Draw 6 unique numbers from the candidate pool and return them sorted ascending
+  // --------------------------------------------
+  function 게임번호생성(후보풀){
+    var 복사본 = 후보풀.slice(); // copy to avoid mutating the original array
+    var 뽑힌번호 = [];
+
+    // Randomly extract 6 numbers using the Fisher-Yates method
+    for(var i = 0; i < 6; i++){
+      var 랜덤인덱스 = Math.floor(Math.random() * 복사본.length);
+      뽑힌번호.push(복사본[랜덤인덱스]);
+      복사본.splice(랜덤인덱스, 1);
+    }
+
+    // Auto-sort in ascending order
+    뽑힌번호.sort(function(a, b){ return a - b; });
+    return 뽑힌번호;
+  }
+
+  // --------------------------------------------
+  // Assigns a different accent color depending on the number's range
+  // (1-10, 11-20, 21-30, 31-40, 41-45)
+  // --------------------------------------------
+  function 번호구간구하기(번호){
+    if(번호 <= 10) return 1;
+    if(번호 <= 20) return 2;
+    if(번호 <= 30) return 3;
+    if(번호 <= 40) return 4;
+    return 5;
+  }
+
+  // --------------------------------------------
+  // Renders the draw results as Glass Board cards + Glass Orb numbers
+  // --------------------------------------------
+  function 결과화면그리기(전체게임결과){
+    var 컨테이너 = document.getElementById('게임보드컨테이너');
+    var html = '';
+
+    전체게임결과.forEach(function(번호배열, 게임인덱스){
+      html += '<div class="글래스카드 게임보드">';
+      html += '  <div class="게임보드헤더">';
+      html += '    <span class="게임번호라벨">GAME ' + (게임인덱스 + 1) + '</span>';
+      html += '    <button class="즐겨찾기버튼" data-게임인덱스="' + 게임인덱스 + '" onclick="즐겨찾기토글(' + 게임인덱스 + ')">♡</button>';
+      html += '  </div>';
+      html += '  <div class="번호목록">';
+
+      번호배열.forEach(function(번호, 순번){
+        var 지연 = (순번 * 0.12) + 's';
+        var 구간 = 번호구간구하기(번호);
+        html += '<div class="번호오브" data-구간="' + 구간 + '" style="--지연시간:' + 지연 + '" ';
+        html += '     onclick="단일번호복사(' + 번호 + ')">' + 번호 + '</div>';
+      });
+
+      html += '  </div>';
+      html += '</div>';
+    });
+
+    컨테이너.innerHTML = html;
+
+    // Register long-press events on each number orb
+    롱프레스이벤트등록();
+  }
+
+  // --------------------------------------------
+  // Long-pressing a number orb shows an iOS-style context menu
+  // --------------------------------------------
+  function 롱프레스이벤트등록(){
+    var 오브목록 = document.querySelectorAll('.번호오브');
+    오브목록.forEach(function(오브){
+      var 타이머 = null;
+
+      var 시작 = function(e){
+        타이머 = setTimeout(function(){
+          컨텍스트메뉴대상번호 = parseInt(오브.textContent, 10);
+          var 위치 = 오브.getBoundingClientRect();
+          컨텍스트메뉴열기(위치.left, 위치.top);
+        }, 500); // treated as a long press after 0.5s or more
+      };
+      var 종료 = function(){ clearTimeout(타이머); };
+
+      오브.addEventListener('mousedown', 시작);
+      오브.addEventListener('touchstart', 시작);
+      오브.addEventListener('mouseup', 종료);
+      오브.addEventListener('mouseleave', 종료);
+      오브.addEventListener('touchend', 종료);
+    });
+  }
+
+  function 컨텍스트메뉴열기(x, y){
+    var 메뉴 = document.getElementById('컨텍스트메뉴');
+    메뉴.style.left = Math.min(x, window.innerWidth - 190) + 'px';
+    메뉴.style.top = (y + 40) + 'px';
+    메뉴.classList.add('보임');
+  }
+  function 컨텍스트메뉴닫기(){
+    document.getElementById('컨텍스트메뉴').classList.remove('보임');
+  }
+
+  // --------------------------------------------
+  // Favorite heart icon click -> save to the server (Google Sheets)
+  // --------------------------------------------
+  function 즐겨찾기토글(게임인덱스){
+    var 하트버튼 = document.querySelector('.즐겨찾기버튼[data-게임인덱스="' + 게임인덱스 + '"]');
+    var 번호배열 = 마지막생성결과[게임인덱스];
+
+    if(즐겨찾기상태[게임인덱스]){
+      // If already saved: just reset the visual state (prevents duplicate saves)
+      즐겨찾기상태[게임인덱스] = false;
+      하트버튼.textContent = '♡';
+      return;
+    }
+
+    // Fill the heart icon and play the pulse animation
+    하트버튼.textContent = '♥';
+    하트버튼.classList.add('애니메이션');
+    setTimeout(function(){ 하트버튼.classList.remove('애니메이션'); }, 400);
+    즐겨찾기상태[게임인덱스] = true;
+
+    // Call the Google Apps Script server function (Code.gs) to save to the sheet
+    google.script.run
+      .withSuccessHandler(function(응답){
+        if(응답 && 응답.성공){
+          토스트표시('✨ 즐겨찾기에 저장되었습니다.');
+        } else {
+          토스트표시('⚠️ 저장에 실패했습니다.');
+        }
+      })
+      .withFailureHandler(function(){
+        토스트표시('⚠️ 저장 중 오류가 발생했습니다.');
+      })
+      .즐겨찾기저장(게임인덱스 + 1, 번호배열);
+  }
+
+  // --------------------------------------------
+  // Copy all numbers (every game)
+  // --------------------------------------------
+  function 번호복사(){
+    if(마지막생성결과.length === 0){
+      토스트표시('먼저 번호를 추첨해주세요!');
+      return;
+    }
+    var 텍스트 = 마지막생성결과.map(function(배열, i){
+      return 'GAME ' + (i + 1) + ' : ' + 배열.join(', ');
+    }).join('\n');
+
+    클립보드에복사(텍스트);
+    토스트표시('📋 번호 복사 완료!');
+  }
+
+  // --------------------------------------------
+  // Copy a single number (used by click or the long-press menu)
+  // --------------------------------------------
+  function 단일번호복사(번호){
+    클립보드에복사(String(번호));
+    토스트표시('📋 ' + 번호 + '번 복사 완료!');
+  }
+
+  // --------------------------------------------
+  // Perform the clipboard copy (supports both old and new browsers)
+  // --------------------------------------------
+  function 클립보드에복사(텍스트){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(텍스트);
+    } else {
+      var 임시입력창 = document.createElement('textarea');
+      임시입력창.value = 텍스트;
+      document.body.appendChild(임시입력창);
+      임시입력창.select();
+      document.execCommand('copy');
+      document.body.removeChild(임시입력창);
+    }
+  }
+
+  // --------------------------------------------
+  // Show a toast notification sliding up from the bottom (Dynamic Island feel)
+  // --------------------------------------------
+  var 토스트타이머 = null;
+  function 토스트표시(메시지){
+    var 토스트엘리먼트 = document.getElementById('토스트');
+    토스트엘리먼트.textContent = 메시지;
+    토스트엘리먼트.classList.add('보임');
+
+    clearTimeout(토스트타이머);
+    // Automatically disappears after 2 seconds
+    토스트타이머 = setTimeout(function(){
+      토스트엘리먼트.classList.remove('보임');
+    }, 2000);
+  }
+</script>
+</body>
+</html>
